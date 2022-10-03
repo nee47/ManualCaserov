@@ -7,6 +7,16 @@ Page{
     width: 960
     height: 700
 
+    Connections{
+            target: backend
+            function onSignalGetData(data){
+                data.map(item=>(
+                             console.log(item)
+                             ))
+                return
+            }
+    }
+
     Rectangle {
         id: rectangle
         color: "#29272a"
@@ -36,10 +46,23 @@ Page{
                 text: qsTr("Buscar")
                 Layout.preferredHeight: 40
                 Layout.preferredWidth: 95
+
+                onClicked: {
+                    backend.searchHandler(searchTextField.text)
+                    loader.source = "Result.qml"
+                }
+                onDoubleClicked: {
+                }
             }
         }
 
-
+        Loader{
+            id: loader
+            anchors.top: columnLayout.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
 
     }
 }
