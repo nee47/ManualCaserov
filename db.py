@@ -9,6 +9,15 @@ class ManualDB():
     def __init__(self):
         self.connection = None
 
+        self.searchQuery = """ 
+            SELECT a.description as "title_app", s.title as "section", c.description
+            FROM articles a INNER JOIN sections s
+            on a.id_article = s.article_cod
+            INNER JOIN content c
+            on s.id_sections = c.section_cod
+            WHERE a.name = "react"
+        """
+
     def create_connection(self, db_file):
         """ create a database connection to a SQLite database """
         try:

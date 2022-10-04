@@ -8,14 +8,23 @@ Page {
         id: addRectangle
         color: "#29272a"
         anchors.fill: parent
-        Text {
-            id: text1
-            x: 342
-            y: 312
-            text: "ACA SE AÑADE"
-            font.pixelSize: 35
-        }
 
+        Button {
+            id: ldbutton
+            width: 129
+            height: 41
+            onClicked: winld.active = true
+            Loader {
+                id: winld
+                active: false
+                sourceComponent: Window {
+                    width: 100
+                    height: 100
+                    visible: true
+                    onClosing: winld.active = false
+                }
+            }
+        }
     }
 
 

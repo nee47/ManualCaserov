@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 import sys
 import os
 from pathlib import Path
@@ -7,7 +6,6 @@ from db import ManualDB
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtCore import *
-from shiboken6 import Object
 
 class ManualBackend(QObject):
    
@@ -19,13 +17,39 @@ class ManualBackend(QObject):
     def __setupDB(self):
         dbPath = os.getcwd()+'\manual.db'
         self.manualdb.create_connection(dbPath)
-        sql_create_articles_table = """ CREATE TABLE IF NOT EXISTS articles (
-                                        id integer PRIMARY KEY,
-                                        name text NOT NULL,
-                                        begin_date text
-                                    ); """
+        sql_create_articles_table = """
+            CREATE TABLE "articles" (
+            "id_article"	INTEGER,
+            "name"	text NOT NULL,
+            "begin_date"	text,
+            "description"	TEXT,
+            PRIMARY KEY("id_article" AUTOINCREMENT)
+        );
+         """
 
-        
+        sql_create_sections_table = """
+            CREATE TABLE "sections" (
+            "id_sections"	INTEGER,
+            "title"	TEXT NOT NULL,
+            "src"	TEXT,
+            "article_cod"	INTEGER,
+            FOREIGN KEY("article_cod") REFERENCES "articles"("id_article"),
+            PRIMARY KEY("id_sections" AUTOINCREMENT)
+        );
+        """
+
+        sql_create_content_table = """
+            CREATE TABLE "content" (
+            "id_content"	INTEGER NOT NULL,
+            "description"	TEXT,
+            "src"	TEXT,
+            "section_cod"	INTEGER,
+            FOREIGN KEY("section_cod") REFERENCES "sections"("id_sections"),
+            PRIMARY KEY("id_content" AUTOINCREMENT)
+        );
+        """
+
+
         self.manualdb.create_table(sql_create_articles_table)
         
 
