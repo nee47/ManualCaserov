@@ -9,13 +9,12 @@ Page{
 
     Connections{
             target: backend
-            function onSignalGetData(data){
-                data.map(item=>(
-                             console.log(item)
-                             ))
+            function onSignalGetData(){
+                console.log("ONSIGNAL WORKING")
                 return
             }
     }
+
 
     Rectangle {
         id: rectangle
@@ -48,10 +47,8 @@ Page{
                 Layout.preferredWidth: 95
 
                 onClicked: {
-                    backend.searchHandler(searchTextField.text)
                     loader.source = "Result.qml"
-                }
-                onDoubleClicked: {
+                    backend.getSections(searchTextField.text)
                 }
             }
         }

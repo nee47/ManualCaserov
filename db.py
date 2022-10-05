@@ -26,16 +26,39 @@ class ManualDB():
         except Error as e:
             print(e)
 
+    def __executeQuery(self, query):
+        try:
+            c = self.connection.cursor()
+            result = c.execute(query)
+            self.connection.commit()
+            return result
+
+        except Error as e:
+            print(e)
+            return None
+
     def create_table(self, create_table_sql):
         """ create a table from the create_table_sql statement
         :param conn: Connection object
         :param create_table_sql: a CREATE TABLE statement
         :return:"""
-        try:
-            c = self.connection.cursor()
-            c.execute(create_table_sql)
-            self.connection.commit()
+        self.__executeQuery(create_table_sql)
 
-        except Error as e:
-            print("aca en create teblor")
-            print(e)
+    def getSectionsQuery(self, searchWord):    
+        q = f"""
+            SELECT sections.id_sections, sections.title 
+            FROM articles INNER JOIN sections
+            ON articles.id_article = sections.article_cod
+            WHERE articles.name = "{searchWord}"            
+        """
+        return self.__executeQuery(q).fetchall()
+    
+    def getContentQuery(self, id):
+        q = f"""
+            SELECT content.description
+            FROM sections INNER JOIN content
+            ON sections.id_sections = content.section_cod
+            WHERE sections.id_sections = {id}            
+        """
+        return self.__executeQuery(q).fetchall()
+    

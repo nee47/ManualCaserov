@@ -9,21 +9,10 @@ Page {
         color: "#29272a"
         anchors.fill: parent
 
-        Button {
-            id: ldbutton
-            width: 129
-            height: 41
-            onClicked: winld.active = true
-            Loader {
-                id: winld
-                active: false
-                sourceComponent: Window {
-                    width: 100
-                    height: 100
-                    visible: true
-                    onClosing: winld.active = false
-                }
-            }
+        Text {
+            id: namet
+            text: qsTr("SOMETHING WILL GO HERE")
+            color: "white"
         }
     }
 

@@ -13,6 +13,30 @@ class ManualBackend(QObject):
         QObject.__init__(self)
         self.manualdb = ManualDB()
         self.__setupDB()
+        self.lastItems = None
+
+    signalGetData = Signal(type([]))
+
+    @Slot(str)
+    def getSections(self, searchWord):
+        #Gets the a list of tuples [(id, sections.name)]
+        rawData = self.manualdb.getSectionsQuery(searchWord)
+        self.lastItems = rawData
+        self.signalGetData.emit([i[1] for i in rawData])
+
+    signalNewTabData = Signal(type([]))
+
+    @Slot(str)
+    def setDataNewTab(self, searchWord):
+        section_id = None
+        
+        for item in self.lastItems:
+            if item[1] == searchWord:
+                section_id = item[0]
+
+        rawData = self.manualdb.getContentQuery(section_id)
+
+        self.signalNewTabData.emit([i[0] for i in rawData])
 
     def __setupDB(self):
         dbPath = os.getcwd()+'\manual.db'
@@ -51,14 +75,9 @@ class ManualBackend(QObject):
 
 
         self.manualdb.create_table(sql_create_articles_table)
-        
-
-    signalGetData = Signal(type([]))
-
-    @Slot(str)
-    def searchHandler(self, searchTerm):
-        self.signalGetData.emit(["hola", "mundo"])
-        print(f"searchTerm es : {searchTerm}")
+        self.manualdb.create_table(sql_create_sections_table)
+        self.manualdb.create_table(sql_create_content_table)
+            
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
