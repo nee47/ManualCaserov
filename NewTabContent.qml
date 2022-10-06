@@ -7,8 +7,8 @@ Rectangle{
     height: 100
     Connections{
             target: backend
-            function onSignalNewTabData(data){
-
+            function onSignalCurrentContent(data){
+                wtext.text = data
                 return
             }
     }
@@ -16,7 +16,6 @@ Rectangle{
         id: wtext
         anchors.left: parent.left
         anchors.right: parent.right
-        text: qsTr("PROBANDO")
     }
 
     Button{

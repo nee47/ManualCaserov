@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-import "component_create.js" as CreateScript
 
 ListView {
     width: 650
@@ -20,12 +19,28 @@ ListView {
                 })
                 return
             }
+
+            function onSignalNewTabData(data){
+                console.log(data)
+                return
+            }
+
+            function onSignalGetSize(s){
+                console.log(`ENTRA CON SIZE:  ${s}`)
+                console.log(typeof s)
+                console.log(`property int tamn antes de ${tam}`)
+                tam = s
+                console.log(`property int tamn despues de ${tam}`)
+                return
+            }
     }
 
     ListModel {
         id: resultListModel
 
     }
+
+    property int tam
 
     model: resultListModel
 
@@ -34,6 +49,7 @@ ListView {
         width: parent.width
         height: 70
         text: name
+        property int tamn: tam
         onClicked: {
             winld.active = true
             backend.setDataNewTab(text)
@@ -52,14 +68,19 @@ ListView {
                     Column{
                         anchors.fill: parent
                         id: clayout
+
                         Component.onCompleted: {
                             var component = Qt.createComponent("NewTabContent.qml");
-                            for (var i=0; i<12; i++) {
+                            console.log(`property int tamn despues oncompleted ${ldbutton.tamn}`)
+                            for (var i=0; i<clayout.tamn; i++) {
                                 var object = component.createObject(clayout);
+                                backend.next()
                             }
                         }
+
+
                     }
-                }
+              }
 
 
             }

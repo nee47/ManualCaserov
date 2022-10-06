@@ -13,7 +13,9 @@ class ManualBackend(QObject):
         QObject.__init__(self)
         self.manualdb = ManualDB()
         self.__setupDB()
-        self.lastItems = None
+        self.sectionList = None
+        self.contentList = None
+        self.current = 0
 
     signalGetData = Signal(type([]))
 
@@ -21,22 +23,32 @@ class ManualBackend(QObject):
     def getSections(self, searchWord):
         #Gets the a list of tuples [(id, sections.name)]
         rawData = self.manualdb.getSectionsQuery(searchWord)
-        self.lastItems = rawData
+        self.sectionList = rawData
         self.signalGetData.emit([i[1] for i in rawData])
 
     signalNewTabData = Signal(type([]))
+    signalGetSize = Signal(int)
 
     @Slot(str)
     def setDataNewTab(self, searchWord):
         section_id = None
         
-        for item in self.lastItems:
+        for item in self.sectionList:
             if item[1] == searchWord:
                 section_id = item[0]
 
         rawData = self.manualdb.getContentQuery(section_id)
+        self.contentList = [i[0] for i in rawData]
+        self.signalNewTabData.emit(self.contentList)
+        self.signalGetSize.emit(len(self.contentList))
 
-        self.signalNewTabData.emit([i[0] for i in rawData])
+    signalCurrentContent = Signal(str)
+    
+
+    @Slot()
+    def next(self):
+        self.signalCurrentContent.emit(self.contentList[self.current])
+        self.current += 1
 
     def __setupDB(self):
         dbPath = os.getcwd()+'\manual.db'
