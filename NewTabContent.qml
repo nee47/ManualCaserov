@@ -5,27 +5,21 @@ import QtQuick.Layouts 1.3
 Rectangle{
     width: 300
     height: 100
-    Connections{
-            target: backend
-            function onSignalCurrentContent(data){
-                wtext.text = data
-                return
-            }
-    }
+    property string txt
+
     Text {
-        id: wtext
+        id: txtid
+        text: txt
+        anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
     }
 
     Button{
-        width: 100
-        height: 50
-        text:  qsTr("Botonazo")
-        anchors.top: wtext.bottom
+        height: 80
+        width: 200
+        text: txt
+        anchors.top: txtid.bottom
+
     }
-
-
-
-
 }

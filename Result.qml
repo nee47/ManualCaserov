@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 ListView {
+    id: lview
     width: 650
     height: 450
 
@@ -20,19 +21,17 @@ ListView {
                 return
             }
 
-            function onSignalNewTabData(data){
-                console.log(data)
+            function onSignalNewTabData(data, s){
+                tam = s
                 return
             }
 
-            function onSignalGetSize(s){
-                console.log(`ENTRA CON SIZE:  ${s}`)
-                console.log(typeof s)
-                console.log(`property int tamn antes de ${tam}`)
-                tam = s
-                console.log(`property int tamn despues de ${tam}`)
+            function onSignalCurrentContent(data){
+                modelContent = data
                 return
             }
+
+
     }
 
     ListModel {
@@ -41,9 +40,10 @@ ListView {
     }
 
     property int tam
+    property string modelContent
 
     model: resultListModel
-
+    //aca esta el problema, muestra el contenido del estado anterior del click en section
     delegate: Button {
         id: ldbutton
         width: parent.width
@@ -52,38 +52,14 @@ ListView {
         property int tamn: tam
         onClicked: {
             winld.active = true
+            console.log(`ACABO DE CLICKEAR ${text}`)
             backend.setDataNewTab(text)
+            winld.source = "Temp.qml"
            }
+
         Loader {
             id: winld
             active: false
-            sourceComponent: Window {
-                id: newTabWindow
-                width: 800
-                height: 600
-                visible: true
-                onClosing: winld.active = false
-                ScrollView{
-                    anchors.fill: parent
-                    Column{
-                        anchors.fill: parent
-                        id: clayout
-
-                        Component.onCompleted: {
-                            var component = Qt.createComponent("NewTabContent.qml");
-                            console.log(`property int tamn despues oncompleted ${ldbutton.tamn}`)
-                            for (var i=0; i<clayout.tamn; i++) {
-                                var object = component.createObject(clayout);
-                                backend.next()
-                            }
-                        }
-
-
-                    }
-              }
-
-
-            }
         }
     }
 
