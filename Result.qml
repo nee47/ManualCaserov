@@ -39,7 +39,6 @@ ListView {
     property var wholeData
 
     model: resultListModel
-    //aca esta el problema, muestra el contenido del estado anterior del click en section
     delegate: Button {
         id: ldbutton
         width: parent.width
@@ -48,7 +47,6 @@ ListView {
         property int tamn: tam
         onClicked: {
             winld.active = true
-            console.log(`ACABO DE CLICKEAR ${text}`)
             backend.setDataNewTab(text)
             winld.source = "Temp.qml"
            }
