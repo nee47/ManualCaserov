@@ -8,7 +8,7 @@ Window {
     visible: true
     onClosing: {
         winld.active = false
-        backend.resetCurrent()
+        winld.source = ""
     }
 
     ScrollView{
@@ -19,12 +19,18 @@ Window {
             Component.onCompleted: {
                 var component = Qt.createComponent("NewTabContent.qml");
                 console.log(`property int tamn despues oncompleted ${lview.tam}`)
+                /*
                 for (var i=0; i<lview.tam; i++) {
                     backend.next()
                     var t = lview.modelContent
                     var object = component.createObject(clayout, {txt: t})
 
                 }
+                */
+                wholeData.map(item => {
+                              var object = component.createObject(clayout, {txt: item})
+                              })
+
             }
         }
     }

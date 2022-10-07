@@ -47,6 +47,7 @@ Page{
                 Layout.preferredWidth: 95
 
                 onClicked: {
+                    loader.source = ""
                     loader.source = "Result.qml"
                     backend.getSections(searchTextField.text)
                 }

@@ -10,7 +10,6 @@ ListView {
     Connections{
             target: backend
             function onSignalGetData(data){
-
                 resultListModel.clear()
                 data.map(sec => {
                              const data = {
@@ -22,15 +21,11 @@ ListView {
             }
 
             function onSignalNewTabData(data, s){
+                wholeData = data
+                console.log(wholeData)
                 tam = s
                 return
             }
-
-            function onSignalCurrentContent(data){
-                modelContent = data
-                return
-            }
-
 
     }
 
@@ -39,8 +34,9 @@ ListView {
 
     }
 
+
     property int tam
-    property string modelContent
+    property var wholeData
 
     model: resultListModel
     //aca esta el problema, muestra el contenido del estado anterior del click en section
