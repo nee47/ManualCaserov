@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
+
 Page {
     width: 960
     height: 700
@@ -29,6 +30,9 @@ Page {
                 selectByMouse: true
                 background: Rectangle {
                     radius: 4
+                }
+                validator: RegularExpressionValidator{
+                    regularExpression: {/(\w+[\s|\S])./g}
                 }
             }
 
