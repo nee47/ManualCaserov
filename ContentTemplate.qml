@@ -7,9 +7,8 @@ Rectangle{
     property string txt
     Layout.preferredWidth: contentWindow.width *0.95
     Layout.fillHeight: true
-    //implicitHeight: 100
     Layout.preferredHeight: 60
-    property int btmargin
+    property var btmargin
     Layout.bottomMargin: btmargin
     color: "transparent"
 
@@ -30,40 +29,39 @@ Rectangle{
         anchors.leftMargin: 20
         anchors.rightMargin: 10
         anchors.topMargin: 5
-        onImplicitHeightChanged: {
-            console.log(`r height: ${templateItem.height} tx heihgt: ${height}!`)
-            templateItem.btmargin = height
+        onImplicitHeightChanged: {templateItem.btmargin = implicitHeight-50}
+
+        Button{
+            id: editButton
+            height: 15
+            width: 45
+            text: qsTr("editar")
+            flat: true
+            property string bgColor: "Transparent"
+            background: Rectangle{
+                color: editButton.bgColor
+                border.color: "#000000"
+                radius: 1
+            }
+
+            onClicked: {
+                if(txtid.readOnly){
+                    bgColor = "#18A558"
+                    txtid.readOnly = false
+                    text = qsTr("ok")
+                }
+                else{
+                    bgColor = "Transparent"
+                    txtid.readOnly = true
+                    text = qsTr("editar")
+                }
+            }
+
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
         }
     }
 
-    Button{
-        id: editButton
-        height: 25
-        width: 75
-        text: qsTr("editar")
-        flat: true
-        property string bgColor: "Transparent"
-        background: Rectangle{
-            color: editButton.bgColor
-            border.color: "#000000"
-            radius: 1
-        }
 
-        onClicked: {
-            if(txtid.readOnly){
-                bgColor = "#18A558"
-                txtid.readOnly = false
-                text = qsTr("ok")
-            }
-            else{
-                bgColor = "Transparent"
-                txtid.readOnly = true
-                text = qsTr("editar")
-            }
-        }
-        anchors.top: txtid.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-    }
 
 }

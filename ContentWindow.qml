@@ -22,7 +22,13 @@ Window {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-
+        Text {
+            id: topBarTitleSection
+            text: sectionListView.sectionClickedName
+            color: "#ffffff"
+            anchors.centerIn: parent
+            font.pixelSize: 15
+        }
         Button{
             id: addNewContentButton
             text: qsTr("+")

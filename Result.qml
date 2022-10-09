@@ -33,6 +33,7 @@ ListView {
     }
 
     property int sectionClickedId
+    property string sectionClickedName
     property var contentData
 
     model: resultListModel
@@ -43,6 +44,7 @@ ListView {
         text: name
         onClicked: {
             winld.active = true
+            sectionClickedName = text
             backend.setDataNewTab(text)
             winld.source = "ContentWindow.qml"
            }
