@@ -9,10 +9,6 @@ Page{
 
     Connections{
             target: backend
-            function onSignalGetData(){
-                console.log("ONSIGNAL WORKING")
-                return
-            }
     }
 
 

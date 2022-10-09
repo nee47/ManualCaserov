@@ -39,27 +39,29 @@ class ManualBackend(QObject):
 
         rawData = self.manualdb.getContentQuery(section_id)
         self.contentList = [i[0] for i in rawData]
-        self.signalNewTabData.emit(self.contentList, len(self.contentList)) 
-
+        self.signalNewTabData.emit(self.contentList, section_id)
+    
+    @Slot(type([]))
+    def insertNewItems(self, data):
+        self.manualdb.insertItemsQuery(data) 
+    
     def __setupDB(self):
         dbPath = os.getcwd()+'\manual.db'
         self.manualdb.create_connection(dbPath)
         sql_create_articles_table = """
-            CREATE TABLE "articles" (
-            "id_article"	INTEGER,
-            "name"	text NOT NULL,
-            "begin_date"	text,
+        CREATE TABLE "articles" (
+            "id_article"    INTEGER,
+            "name"	text NOT NULL UNIQUE,
+            "creation_date"	text DEFAULT CURRENT_TIMESTAMP,
             "description"	TEXT,
-            PRIMARY KEY("id_article" AUTOINCREMENT)
-        );
+            PRIMARY KEY("id_article" AUTOINCREMENT))
          """
 
         sql_create_sections_table = """
-            CREATE TABLE "sections" (
+        CREATE TABLE "sections" (
             "id_sections"	INTEGER,
             "title"	TEXT NOT NULL,
-            "src"	TEXT,
-            "article_cod"	INTEGER,
+            "article_cod"	INTEGER NOT NULL,
             FOREIGN KEY("article_cod") REFERENCES "articles"("id_article"),
             PRIMARY KEY("id_sections" AUTOINCREMENT)
         );
@@ -67,13 +69,13 @@ class ManualBackend(QObject):
 
         sql_create_content_table = """
             CREATE TABLE "content" (
-            "id_content"	INTEGER NOT NULL,
-            "description"	TEXT,
-            "src"	TEXT,
-            "section_cod"	INTEGER,
-            FOREIGN KEY("section_cod") REFERENCES "sections"("id_sections"),
-            PRIMARY KEY("id_content" AUTOINCREMENT)
-        );
+                "id_content"	INTEGER,
+                "description"	TEXT NOT NULL,
+                "src"	TEXT,
+                "section_cod"	INTEGER NOT NULL,
+                FOREIGN KEY("section_cod") REFERENCES "sections"("id_sections"),
+                PRIMARY KEY("id_content" AUTOINCREMENT)
+            );
         """
 
 

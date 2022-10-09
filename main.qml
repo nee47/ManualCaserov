@@ -14,6 +14,8 @@ Window {
     Material.theme: Material.Dark
     Material.accent: Material.DeepOrange
 
+    //flags: Qt.FramelessWindowHint
+
     StackLayout {
         id: stacklayout
         anchors.left: parent.left

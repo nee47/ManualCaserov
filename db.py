@@ -1,4 +1,3 @@
-import imp
 from msilib.schema import Class
 
 
@@ -26,10 +25,15 @@ class ManualDB():
         except Error as e:
             print(e)
 
-    def __executeQuery(self, query):
+    def executeQuery(self, query, values=None):
         try:
             c = self.connection.cursor()
-            result = c.execute(query)
+            result = None
+            if values:
+                result = c.execute(query, values)
+            else:
+                result = c.execute(query)
+            
             self.connection.commit()
             return result
 
@@ -42,7 +46,7 @@ class ManualDB():
         :param conn: Connection object
         :param create_table_sql: a CREATE TABLE statement
         :return:"""
-        self.__executeQuery(create_table_sql)
+        self.executeQuery(create_table_sql)
 
     def getSectionsQuery(self, searchWord):    
         q = f"""
@@ -51,7 +55,7 @@ class ManualDB():
             ON articles.id_article = sections.article_cod
             WHERE articles.name = "{searchWord}"            
         """
-        return self.__executeQuery(q).fetchall()
+        return self.executeQuery(q).fetchall()
     
     def getContentQuery(self, id):
         q = f"""
@@ -60,5 +64,24 @@ class ManualDB():
             ON sections.id_sections = content.section_cod
             WHERE sections.id_sections = {id}            
         """
-        return self.__executeQuery(q).fetchall()
+        return self.executeQuery(q).fetchall()
     
+    def insertItemsQuery(self, items):
+
+        q = f"""
+            INSERT INTO articles (name)
+            VALUES (?);            
+        """
+        article_id = self.executeQuery(q,(str.lower(items[0]),)).lastrowid
+        
+        q = f"""
+            INSERT INTO sections (title, article_cod)
+            VALUES (?, ?);
+        """
+        section_id = self.executeQuery(q, (items[1], article_id)).lastrowid
+        q = f"""
+            INSERT INTO content (description, section_cod)
+            VALUES (?, ?);            
+        """
+        self.executeQuery(q, (items[2], section_id))
+        return 

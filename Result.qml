@@ -3,7 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 ListView {
-    id: lview
+    id: sectionListView
     width: 650
     height: 450
 
@@ -20,10 +20,9 @@ ListView {
                 return
             }
 
-            function onSignalNewTabData(data, s){
-                wholeData = data
-                console.log(wholeData)
-                tam = s
+            function onSignalNewTabData(data, id){
+                contentData = data
+                sectionClickedId = id
                 return
             }
 
@@ -31,12 +30,10 @@ ListView {
 
     ListModel {
         id: resultListModel
-
     }
 
-
-    property int tam
-    property var wholeData
+    property int sectionClickedId
+    property var contentData
 
     model: resultListModel
     delegate: Button {
@@ -44,11 +41,10 @@ ListView {
         width: parent.width
         height: 70
         text: name
-        property int tamn: tam
         onClicked: {
             winld.active = true
             backend.setDataNewTab(text)
-            winld.source = "Temp.qml"
+            winld.source = "ContentWindow.qml"
            }
 
         Loader {
@@ -56,5 +52,5 @@ ListView {
             active: false
         }
     }
-
 }
+
