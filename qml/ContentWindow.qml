@@ -46,14 +46,10 @@ Window {
 
     ScrollView{
         id: scrollView
-        //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: topBar.bottom
         anchors.bottom: parent.bottom
-        //anchors.leftMargin: 10
-        //anchors.rightMargin: 10
-
         ColumnLayout{
             id: clayout
             anchors.fill: parent
@@ -61,7 +57,12 @@ Window {
                         target: addNewContentButton
                         function onSendMessage(){
                             var component = Qt.createComponent("ContentTemplate.qml");
-                            var object = component.createObject(clayout, {txt: "", f: function a(){console.log("secomporta diferente")}});
+                            var object = component.createObject(clayout, {txt: "", f: function a(newDescription){
+                                if(newDescription !==""){
+                                    backend.insertNewContent(newDescription)
+                                    ldbutton.loadContentView()
+                                }
+                            }});
                         }
                     }
             Component.onCompleted: {

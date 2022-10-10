@@ -1,3 +1,3 @@
 {
-    "files": ["main.py","Result.qml","Add.qml","ContentWindow.qml","main.qml","Inicio.qml","ContentTemplate.qml"]
+    "files": ["qml/ContentWindow.qml","qml/main.qml","qml/ContentTemplate.qml","qml/Result.qml","main.py","qml/Add.qml","qml/Inicio.qml"]
 }

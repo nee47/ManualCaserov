@@ -46,7 +46,6 @@ Page{
                     loader.source = ""
                     loader.source = "Result.qml"
                     backend.getSections(searchTextField.text)
-                    console.log("SECCIONES CARGADAS")
                 }
 
                 onClicked: loadSections()

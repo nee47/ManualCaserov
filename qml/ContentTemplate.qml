@@ -55,13 +55,14 @@ Rectangle{
                     bgColor = "Transparent"
                     txtid.readOnly = true
                     text = qsTr("editar")
+                    if(templateItem.f){
+                        templateItem.f(txtid.text)
+                    }
+                    else {
+                        console.log("HAGO UPDATE")
+                    }
                 }
-                if(templateItem.f){
-                    templateItem.f()
-                }
-                else {
-                    console.log("HAGO UPDATE")
-                }
+
             }
 
             anchors.right: parent.right

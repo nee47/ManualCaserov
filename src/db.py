@@ -81,9 +81,6 @@ class ManualDB():
         """
         return self.executeQuery(q,(name,))
 
-    def _getArticleId(self, name):
-        pass
-
     def insertItemsQuery(self, items):
 
         q = f"""
@@ -123,3 +120,12 @@ class ManualDB():
         self.executeQuery(q, (sectionName, article_id[0]))
 
         return 
+
+    def insertNewContentQuery(self, contentDescription, sec_cod):
+
+        q = f"""
+            INSERT INTO content (description, section_cod)
+            VALUES (?,?);            
+        """
+
+        self.executeQuery(q, (contentDescription, sec_cod))

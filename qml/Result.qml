@@ -9,10 +9,12 @@ ListView {
 
     Connections{
             target: backend
-            function onSignalGetData(data){
-                if(data.length === 0) return
+            //sets the the list view the sections of
+            //a given article
+            function onSignalGetSections(sections){
+                if(sections.length === 0) return
                 resultListModel.clear()
-                data.map(sec => {
+                sections.map(sec => {
                              const data = {
                                  name: sec
                              }
@@ -71,19 +73,19 @@ ListView {
             }
         }
 
+        function loadContentView(){
+            winld.active = true
+            sectionClickedName = text
+            backend.setDataNewTab(text)
+            winld.source = ""
+            winld.source = "ContentWindow.qml"
+        }
 
         onClicked: {
             if(text === "+"){
-
                 messageDialog.open()
-
             }
-            else{
-                winld.active = true
-                sectionClickedName = text
-                backend.setDataNewTab(text)
-                winld.source = "ContentWindow.qml"
-            }
+            else loadContentView()
         }
 
         Loader {
