@@ -10,6 +10,7 @@ ListView {
     Connections{
             target: backend
             function onSignalGetData(data){
+                if(data.length === 0) return
                 resultListModel.clear()
                 data.map(sec => {
                              const data = {
@@ -17,6 +18,10 @@ ListView {
                              }
                              resultListModel.append(data)
                 })
+                const agregar = {
+                    name: "+"
+                }
+                resultListModel.append(agregar)
                 return
             }
 
@@ -42,12 +47,44 @@ ListView {
         width: parent.width
         height: 70
         text: name
+
+        Dialog{
+            anchors.centerIn: parent
+            id: messageDialog
+            width: 400
+            height: 100
+            modal: Qt.WindowModal
+            title: "Ingresa nueva seccion"
+            standardButtons: Dialog.Ok | Dialog.Cancel
+            TextField{
+                id:tfield
+                anchors.centerIn: parent
+                width: 300
+                height: 30
+
+            }
+
+            onAccepted: {
+                backend.insertNewSection(searchTextField.text, tfield.text)
+                searchButton.loadSections()
+                close()
+            }
+        }
+
+
         onClicked: {
-            winld.active = true
-            sectionClickedName = text
-            backend.setDataNewTab(text)
-            winld.source = "ContentWindow.qml"
-           }
+            if(text === "+"){
+
+                messageDialog.open()
+
+            }
+            else{
+                winld.active = true
+                sectionClickedName = text
+                backend.setDataNewTab(text)
+                winld.source = "ContentWindow.qml"
+            }
+        }
 
         Loader {
             id: winld

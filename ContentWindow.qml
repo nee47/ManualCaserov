@@ -61,7 +61,7 @@ Window {
                         target: addNewContentButton
                         function onSendMessage(){
                             var component = Qt.createComponent("ContentTemplate.qml");
-                            var object = component.createObject(clayout, {txt: ""});
+                            var object = component.createObject(clayout, {txt: "", f: function a(){console.log("secomporta diferente")}});
                         }
                     }
             Component.onCompleted: {

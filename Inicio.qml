@@ -41,12 +41,15 @@ Page{
                 text: qsTr("Buscar")
                 Layout.preferredHeight: 40
                 Layout.preferredWidth: 95
-
-                onClicked: {
+                function loadSections(){
+                    if(searchTextField.text === "") return
                     loader.source = ""
                     loader.source = "Result.qml"
                     backend.getSections(searchTextField.text)
+                    console.log("SECCIONES CARGADAS")
                 }
+
+                onClicked: loadSections()
             }
         }
 

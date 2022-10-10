@@ -55,7 +55,8 @@ class ManualDB():
             ON articles.id_article = sections.article_cod
             WHERE articles.name = "{searchWord}"            
         """
-        return self.executeQuery(q).fetchall()
+        res = self.executeQuery(q)
+        return (res.fetchall(), res.lastrowid)
     
     def getContentQuery(self, id):
         q = f"""
@@ -66,13 +67,30 @@ class ManualDB():
         """
         return self.executeQuery(q).fetchall()
     
+    def _insertArticle(self, name):
+        q = f"""
+            INSERT INTO articles (name)
+            VALUES (?);            
+        """
+        return self.executeQuery(q,(str.lower(name),))
+
+    def _insertArticle(self, name):
+        q = f"""
+            INSERT INTO articles (name)
+            VALUES (?);            
+        """
+        return self.executeQuery(q,(name,))
+
+    def _getArticleId(self, name):
+        pass
+
     def insertItemsQuery(self, items):
 
         q = f"""
             INSERT INTO articles (name)
             VALUES (?);            
         """
-        article_id = self.executeQuery(q,(str.lower(items[0]),)).lastrowid
+        article_id = self._insertArticle(str.lower(items[0])).lastrowid
         
         q = f"""
             INSERT INTO sections (title, article_cod)
@@ -84,4 +102,24 @@ class ManualDB():
             VALUES (?, ?);            
         """
         self.executeQuery(q, (items[2], section_id))
+        return 
+
+    def insertNewSectionQuery(self, articleName, sectionName):
+
+        print(f"lo que entra articlename: {articleName}, section name : {sectionName}")
+
+        q = f"""
+            SELECT  id_article  
+            FROM articles
+            WHERE articles.name = ?
+            ;            
+        """
+        article_id = self.executeQuery(q, (articleName,)).fetchone()
+        
+        q = f"""
+            INSERT INTO sections (title, article_cod)
+            VALUES (?, ?);            
+        """
+        self.executeQuery(q, (sectionName, article_id[0]))
+
         return 

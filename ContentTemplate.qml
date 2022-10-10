@@ -9,6 +9,7 @@ Rectangle{
     Layout.fillHeight: true
     Layout.preferredHeight: 60
     property var btmargin
+    property var f
     Layout.bottomMargin: btmargin
     color: "transparent"
 
@@ -44,7 +45,7 @@ Rectangle{
                 radius: 1
             }
 
-            onClicked: {
+            onClicked:{
                 if(txtid.readOnly){
                     bgColor = "#18A558"
                     txtid.readOnly = false
@@ -54,6 +55,12 @@ Rectangle{
                     bgColor = "Transparent"
                     txtid.readOnly = true
                     text = qsTr("editar")
+                }
+                if(templateItem.f){
+                    templateItem.f()
+                }
+                else {
+                    console.log("HAGO UPDATE")
                 }
             }
 
