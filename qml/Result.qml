@@ -27,6 +27,14 @@ ListView {
                 return
             }
 
+            function onSignalTuple(tupleData){
+                tupleData.map(item => {
+                                  console.log(item[0])
+                                  console.log(item[1])
+                              })
+                return
+            }
+
             function onSignalNewTabData(data, id){
                 contentData = data
                 sectionClickedId = id

@@ -54,6 +54,7 @@ class ManualBackend(QObject):
         self.manualdb.create_table(sql_create_content_table)
 
     signalGetSections = Signal(type([]))
+    signalTuple = Signal(type([]))
     #Gets the sections as a list of tuples [(id, sections.name)]
     #emits a signal returning the sections of a given article
     #post: the signal emited carries an array  with strins [section1, ....,sectionk] 
@@ -62,7 +63,8 @@ class ManualBackend(QObject):
         rawData, id = self.manualdb.getSectionsQuery(str.lower(articleName))
         self.currentData["article_id"] = id
         self.sectionList = rawData
-        self.signalGetSections.emit([i[1] for i in rawData])
+        self.signalGetSections.emit([ i[1] for i in rawData])
+        self.signalTuple.emit([ [i[0],i[1]] for i in rawData])
 
     signalNewTabData = Signal(type([]), int)
 
@@ -91,6 +93,10 @@ class ManualBackend(QObject):
     @Slot(str)
     def insertNewContent(self, contentDescription):
         self.manualdb.insertNewContentQuery(contentDescription, self.currentData.get("section_id"))
+    
+    @Slot(str)
+    def updateContent(self, newDescription):
+        self.manualdb.updateContentQuery(newDescription, self.currentData.get("section_id"))
     
             
 

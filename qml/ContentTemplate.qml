@@ -58,13 +58,12 @@ Rectangle{
                     if(templateItem.f){
                         templateItem.f(txtid.text)
                     }
-                    else {
-                        console.log("HAGO UPDATE")
+                    else {// ACA SE HACE EL UPDATE A LA DB
+                        backend.updateContent(txtid.text)
                     }
                 }
 
             }
-
             anchors.right: parent.right
             anchors.bottom: parent.bottom
         }

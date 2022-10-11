@@ -82,18 +82,25 @@ class ManualDB():
         return self.executeQuery(q,(name,))
 
     def insertItemsQuery(self, items):
+        
+        if(items[0] == "" or items[1] == "" ):
+            return
 
         q = f"""
             INSERT INTO articles (name)
             VALUES (?);            
         """
-        article_id = self._insertArticle(str.lower(items[0])).lastrowid
-        
+        article_id = self._insertArticle(items[0]).lastrowid
+    
         q = f"""
             INSERT INTO sections (title, article_cod)
             VALUES (?, ?);
         """
         section_id = self.executeQuery(q, (items[1], article_id)).lastrowid
+
+        if(items[2] == "" ):
+            return
+
         q = f"""
             INSERT INTO content (description, section_cod)
             VALUES (?, ?);            
@@ -129,3 +136,16 @@ class ManualDB():
         """
 
         self.executeQuery(q, (contentDescription, sec_cod))
+
+    def updateContentQuery(self, newDescription, sec_cod):
+
+        q = f"""
+            UPDATE content
+              SET description = ? ,
+              WHERE description = ?           
+        """
+
+        self.executeQuery(q, (newDescription, sec_cod))
+
+
+
