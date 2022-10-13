@@ -137,15 +137,15 @@ class ManualDB():
 
         self.executeQuery(q, (contentDescription, sec_cod))
 
-    def updateContentQuery(self, newDescription, sec_cod):
+    def updateContentQuery(self, newDescription, id):
 
         q = f"""
             UPDATE content
-              SET description = ? ,
-              WHERE description = ?           
+              SET description = ? 
+              WHERE content.id_content = ?           
         """
 
-        self.executeQuery(q, (newDescription, sec_cod))
+        self.executeQuery(q, (newDescription, id))
 
 
 

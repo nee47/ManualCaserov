@@ -27,15 +27,7 @@ ListView {
                 return
             }
 
-            function onSignalTuple(tupleData){
-                tupleData.map(item => {
-                                  console.log(item[0])
-                                  console.log(item[1])
-                              })
-                return
-            }
-
-            function onSignalNewTabData(data, id){
+            function onSignalGetContent(data, id){
                 contentData = data
                 sectionClickedId = id
                 return
@@ -84,7 +76,7 @@ ListView {
         function loadContentView(){
             winld.active = true
             sectionClickedName = text
-            backend.setDataNewTab(text)
+            backend.getContent(text)
             winld.source = ""
             winld.source = "ContentWindow.qml"
         }
