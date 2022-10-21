@@ -7,6 +7,29 @@ ListView {
     width: 650
     height: 450
 
+    Dialog{
+        anchors.centerIn: parent
+        id: messageDialog
+        width: 400
+        height: 100
+        modal: Qt.WindowModal
+        title: "Ingresa nueva seccion"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        TextField{
+            id:tfield
+            anchors.centerIn: parent
+            width: 300
+            height: 30
+
+        }
+
+        onAccepted: {
+            backend.insertNewSection(searchTextField.text, tfield.text)
+            searchButton.loadSections()
+            close()
+        }
+    }
+
     Connections{
             target: backend
             //sets the the list view the sections of
@@ -49,29 +72,6 @@ ListView {
         width: parent.width
         height: 70
         text: name
-
-        Dialog{
-            anchors.centerIn: parent
-            id: messageDialog
-            width: 400
-            height: 100
-            modal: Qt.WindowModal
-            title: "Ingresa nueva seccion"
-            standardButtons: Dialog.Ok | Dialog.Cancel
-            TextField{
-                id:tfield
-                anchors.centerIn: parent
-                width: 300
-                height: 30
-
-            }
-
-            onAccepted: {
-                backend.insertNewSection(searchTextField.text, tfield.text)
-                searchButton.loadSections()
-                close()
-            }
-        }
 
         function loadContentView(){
             winld.active = true

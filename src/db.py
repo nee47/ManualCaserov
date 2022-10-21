@@ -60,7 +60,7 @@ class ManualDB():
     
     def getContentQuery(self, id):
         q = f"""
-            SELECT content.description
+            SELECT content.id_content, content.description
             FROM sections INNER JOIN content
             ON sections.id_sections = content.section_cod
             WHERE sections.id_sections = {id}            
@@ -82,30 +82,35 @@ class ManualDB():
         return self.executeQuery(q,(name,))
 
     def insertItemsQuery(self, items):
-        
+
         if(items[0] == "" or items[1] == "" ):
             return
+        
+        try:
 
-        q = f"""
-            INSERT INTO articles (name)
-            VALUES (?);            
-        """
-        article_id = self._insertArticle(items[0]).lastrowid
-    
-        q = f"""
-            INSERT INTO sections (title, article_cod)
-            VALUES (?, ?);
-        """
-        section_id = self.executeQuery(q, (items[1], article_id)).lastrowid
+            q = f"""
+                INSERT INTO articles (name)
+                VALUES (?);            
+            """
+            article_id = self._insertArticle(items[0].lower()).lastrowid
+        
+            q = f"""
+                INSERT INTO sections (title, article_cod)
+                VALUES (?, ?);
+            """
+            section_id = self.executeQuery(q, (items[1], article_id)).lastrowid
 
-        if(items[2] == "" ):
-            return
+            if(items[2] == "" ):
+                return
 
-        q = f"""
-            INSERT INTO content (description, section_cod)
-            VALUES (?, ?);            
-        """
-        self.executeQuery(q, (items[2], section_id))
+            q = f"""
+                INSERT INTO content (description, section_cod)
+                VALUES (?, ?);            
+            """
+            self.executeQuery(q, (items[2], section_id))
+        except Error as e:
+            print(e)
+
         return 
 
     def insertNewSectionQuery(self, articleName, sectionName):

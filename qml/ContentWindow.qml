@@ -68,7 +68,7 @@ Window {
             Component.onCompleted: {
                 var component = Qt.createComponent("ContentTemplate.qml");
                 contentData.map(item => {
-                              var object = component.createObject(clayout, {txt: item})
+                              var object = component.createObject(clayout, {txt: item[1], id_content: item[0]})
                               })
             }
 

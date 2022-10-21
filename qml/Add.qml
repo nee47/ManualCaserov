@@ -10,8 +10,25 @@ Page {
         color: "#29272a"
         anchors.fill: parent
 
-        Column{
+        Dialog{
+            anchors.centerIn: parent
+            id: errorDialog
+            width: 400
+            height: 100
+            modal: Qt.WindowModal
+            title: "Error de campos"
+            standardButtons: Dialog.Ok
+            Text{
+                id:tfield
+                anchors.centerIn: parent
+                text: qsTr("Los 2 primeros campos no pueden ser vacios")
+                width: 300
+                height: 30
+            }
+        }
 
+        Column{
+            id: inputsContainer
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -20,7 +37,13 @@ Page {
             anchors.rightMargin: 150
             anchors.leftMargin: 150
             anchors.topMargin: 30
-            id: cl1
+            function cleanFields(){
+                addNameTF.text = ""
+                addSectionTF.text = ""
+                addSectionTF.enabled = false
+                addDescriptionTF.text = ""
+                addDescriptionTF.enabled = false
+            }
 
             TextField{
                 id: addNameTF
@@ -75,13 +98,15 @@ Page {
                 text: qsTr("Guardar")
                 background: Rectangle { radius: 2 }
                 onClicked: {
-                    backend.insertNewItems([addNameTF.text, addSectionTF.text, addDescriptionTF.text])
+                    if(addNameTF.text !== "" & addSectionTF.text !== ""){
+                        backend.insertNewItems([addNameTF.text, addSectionTF.text, addDescriptionTF.text])
+                        inputsContainer.cleanFields()
+                    }
+                    else errorDialog.open()
                 }
             }
         }
     }
-
-
 }
 
 

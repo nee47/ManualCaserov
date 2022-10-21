@@ -34,6 +34,7 @@ class ManualBackend(QObject):
             "id_sections"	INTEGER,
             "title"	TEXT NOT NULL,
             "article_cod"	INTEGER NOT NULL,
+            "creation_date"	text DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY("article_cod") REFERENCES "articles"("id_article"),
             PRIMARY KEY("id_sections" AUTOINCREMENT)
         );
@@ -45,6 +46,7 @@ class ManualBackend(QObject):
                 "description"	TEXT NOT NULL,
                 "src"	TEXT,
                 "section_cod"	INTEGER NOT NULL,
+                "creation_date"	text DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY("section_cod") REFERENCES "sections"("id_sections"),
                 PRIMARY KEY("id_content" AUTOINCREMENT)
             );
@@ -75,9 +77,10 @@ class ManualBackend(QObject):
             if item[1] == section:
                 section_id = item[0]
                 self.currentData["section_id"] = section_id
-
+        #[(id_section, id_description)]
         rawData = self.manualdb.getContentQuery(section_id)
-        self.contentList = [i[0] for i in rawData]
+        self.contentList = [[i[0], i[1]] for i in rawData]
+        print(self.contentList)
         self.signalGetContent.emit(self.contentList, section_id)
     
     @Slot(type([]))
@@ -92,11 +95,11 @@ class ManualBackend(QObject):
     def insertNewContent(self, contentDescription):
         self.manualdb.insertNewContentQuery(contentDescription, self.currentData.get("section_id"))
     
-    @Slot(str)
-    def updateContent(self, newDescription):
-        self.manualdb.updateContentQuery(newDescription, self.currentData.get("section_id"))
+    @Slot(str, int)
+    def updateContent(self, newDescription, id_content):
+        self.manualdb.updateContentQuery(newDescription, id_content)
     
-            
+                
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
