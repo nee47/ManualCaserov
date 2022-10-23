@@ -51,6 +51,12 @@ Rectangle{
                 radius: 1
             }
 
+            function startEdition(){
+                bgColor = "#18A558"
+                txtid.readOnly = false
+                text = qsTr("ok")
+                cancelButton.activateCancelButton()
+            }
             function terminateEdition(){
                 bgColor = "Transparent"
                 txtid.readOnly = true
@@ -59,10 +65,7 @@ Rectangle{
 
             onClicked:{
                 if(txtid.readOnly){
-                    bgColor = "#18A558"
-                    txtid.readOnly = false
-                    text = qsTr("ok")
-                    cancelButton.activateCancelButton()
+                    startEdition()
                 }
                 else{
                     terminateEdition()
@@ -74,8 +77,12 @@ Rectangle{
                         backend.updateContent(txtid.text, id_content)
                     }
                 }
+            }
+
+            Component.onCompleted: {
 
             }
+
             anchors.right: cancelButton.left
             anchors.bottom: parent.bottom
         }

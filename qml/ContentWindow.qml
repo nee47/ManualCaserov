@@ -37,10 +37,6 @@ Window {
                 }
             anchors.fill: parent
             anchors.leftMargin: parent.width *9.5/10
-            signal sendMessage()
-            onClicked: {
-                sendMessage()
-            }
         }
     }
 
@@ -55,7 +51,7 @@ Window {
             anchors.fill: parent
             Connections {
                         target: addNewContentButton
-                        function onSendMessage(){
+                        function onClicked(){
                             var component = Qt.createComponent("ContentTemplate.qml");
                             var object = component.createObject(clayout, {txt: "", f: function a(newDescription){
                                 if(newDescription !==""){
