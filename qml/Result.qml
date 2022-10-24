@@ -6,6 +6,9 @@ ListView {
     id: sectionListView
     width: 650
     height: 450
+    property int sectionClickedId
+    property string sectionClickedName
+    property var contentData
 
     Dialog{
         anchors.centerIn: parent
@@ -62,11 +65,8 @@ ListView {
         id: resultListModel
     }
 
-    property int sectionClickedId
-    property string sectionClickedName
-    property var contentData
-
     model: resultListModel
+
     delegate: Button {
         id: ldbutton
         width: parent.width

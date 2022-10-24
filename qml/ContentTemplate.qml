@@ -33,6 +33,12 @@ Rectangle{
         anchors.rightMargin: 10
         anchors.topMargin: 5
         onImplicitHeightChanged: {templateItem.btmargin = implicitHeight-50}
+        Component.onCompleted: {
+            if(templateItem.f){
+                editButton.startEdition()
+                forceActiveFocus()
+            }
+        }
 
         function reverseTextArea(){
             text = previousTextStatus
@@ -77,10 +83,6 @@ Rectangle{
                         backend.updateContent(txtid.text, id_content)
                     }
                 }
-            }
-
-            Component.onCompleted: {
-
             }
 
             anchors.right: cancelButton.left

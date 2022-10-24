@@ -93,7 +93,7 @@ class ManualDB():
                 VALUES (?);            
             """
             article_id = self._insertArticle(items[0].lower()).lastrowid
-        
+            
             q = f"""
                 INSERT INTO sections (title, article_cod)
                 VALUES (?, ?);
@@ -110,7 +110,8 @@ class ManualDB():
             self.executeQuery(q, (items[2], section_id))
         except Error as e:
             print(e)
-
+        except:
+            print("Something else went wrong")
         return 
 
     def insertNewSectionQuery(self, articleName, sectionName):

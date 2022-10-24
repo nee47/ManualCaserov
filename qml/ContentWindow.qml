@@ -50,22 +50,22 @@ Window {
             id: clayout
             anchors.fill: parent
             Connections {
-                        target: addNewContentButton
-                        function onClicked(){
-                            var component = Qt.createComponent("ContentTemplate.qml");
-                            var object = component.createObject(clayout, {txt: "", f: function a(newDescription){
-                                if(newDescription !==""){
-                                    backend.insertNewContent(newDescription)
-                                    ldbutton.loadContentView()
-                                }
-                            }});
+                target: addNewContentButton
+                function onClicked(){
+                    var component = Qt.createComponent("ContentTemplate.qml");
+                    var object = component.createObject(clayout, {txt: "", f: function a(newDescription){
+                        if(newDescription !==""){
+                            backend.insertNewContent(newDescription)
+                            ldbutton.loadContentView()
                         }
-                    }
+                    }});
+                }
+            }
             Component.onCompleted: {
                 var component = Qt.createComponent("ContentTemplate.qml");
                 contentData.map(item => {
-                              var object = component.createObject(clayout, {txt: item[1], id_content: item[0]})
-                              })
+                    var object = component.createObject(clayout, {txt: item[1], id_content: item[0]})
+                })
             }
 
         }
